@@ -10,8 +10,7 @@
     "build": "npm run prebuild && tsc -p .",
     "run": "node build/main.js",
     "test:type-check": "tsc -p . --noEmit",
-    "test:old": "npm run test:type-check && node --loader tsx --test ./src/**/*_test.ts",
-    "test": "mocha --require ts-node/register --watch-extensions ts 'src/**/*.ts' "
+    "test": "mocha --paralell --require ts-node/register --watch-extensions ts 'src/**/*.ts' "
   },
   "keywords": [],
   "author": "",

@@ -1,38 +1,49 @@
+import { WithinFunc } from "../utils/utils"
 
-
+type RPSControl = {
+    // First request time in milliseconds
+    firstRequestAt: number
+    requests: number
+}
 
 export default class Store {
-    hitsTable: Map<string, number>
+    hitsTable: Map<string, RPSControl>
     blacklist: Map<string, number>
     // Given in milliseconds
     expirationTTL: number
+    withinFunc: WithinFunc
 
-    constructor(expirationTTL: number) {
-        this.hitsTable = new Map<string, number>()
+    constructor(expirationTTL: number, withinFunc: WithinFunc) {
+        this.hitsTable = new Map<string, RPSControl>()
         this.blacklist = new Map<string, number>()
         this.expirationTTL = expirationTTL
+        this.withinFunc = withinFunc
     }
 
-
+    // Increments counter for requests coming within a second by network
     hit(network: string): number {
-        if(!this.hitsTable.has(network)){
-            this.hitsTable.set(network, 1)
+        const now = Date.now()
+        if (!this.hitsTable.has(network)) {
+            const control:RPSControl = {
+                firstRequestAt: now,
+                requests: 1,
+            }
+            this.hitsTable.set(network, control)
             return 1
         }
-        const currHits = this.hitsTable.get(network) as number
-        this.hitsTable.set(network, currHits + 1)
-        return currHits + 1
-    }
-
-    getHits(network: string): number{
-        if(!this.hitsTable.has(network)){
-            return 0
+        let currControl = this.hitsTable.get(network) as RPSControl
+        if (!this.withinFunc(now, currControl.firstRequestAt)){
+            currControl.requests = 1
+            currControl.firstRequestAt = now
+            return 1
         }
-        return this.hitsTable.get(network)!
+        currControl.requests++
+        // No need to hitsTable.set because currControl is a reference
+        return currControl.requests
     }
 
     addToBlacklist(network: string): void {
-        if (this.blacklist.has(network)){
+        if (this.blacklist.has(network)) {
             throw new Error("already in blacklist")
         }
         const expirationTime = Date.now() + this.expirationTTL
@@ -40,14 +51,14 @@ export default class Store {
     }
 
     removeFromBlacklist(network: string): void {
-        if (!this.isInBlacklist(network)){
+        if (!this.isInBlacklist(network)) {
             throw new Error("not in blacklist")
         }
         this.blacklist.delete(network)
     }
 
     isInBlacklist(network: string): boolean {
-        if (!this.blacklist.has(network)){
+        if (!this.blacklist.has(network)) {
             return false
         }
         const expirationTime = this.blacklist.get(network) as number
