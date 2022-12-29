@@ -1,9 +1,9 @@
 import assert from "node:assert"
 import Store from "./store"
 import { parseMaskToBitSize, parseNetworkPart } from "../network/network"
-import { millisecond, sleep, within, withinOneSecond } from "../utils/utils"
+import { Millisecond, sleep, within, withinOneSecond } from "../utils/utils"
 
-describe("store test suite", () => {
+describe("store examples suite", () => {
     const ip = "128.92.39.29"
     const mask = "255.255.255.0"
     const bitSize = parseMaskToBitSize(mask)
@@ -35,7 +35,7 @@ describe("store test suite", () => {
 
     it("should end up on counter = 1 because rate is N requests/10ms but sleep 15ms", async () => {
         const ttl = 1000
-        const withinFunc = within(millisecond * 10)
+        const withinFunc = within(Millisecond * 10)
         const store = new Store(ttl, withinFunc)
         // 2 requests within 10ms
         const k1 = store.hit(network)

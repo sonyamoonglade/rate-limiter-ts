@@ -11,11 +11,11 @@ export const after = (time: number, ...rest: number[]) => {
     return time + add > now
 }
 
-export const millisecond = 1
-export const second = millisecond * 1000
+export const Millisecond = 1
+export const Second = Millisecond * 1000
 
 export const withinOneSecond = (now: number, start: number) => {
-    return now - start <= second
+    return now - start <= Second
 }
 
 export const within = (delta: number) => (now: number, start: number) => {

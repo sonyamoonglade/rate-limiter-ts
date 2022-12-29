@@ -1,6 +1,7 @@
 import assert from "node:assert"
 import { parseMaskToBitSize, parseNetworkPart } from "./network"
-describe("parse mask test suite", () => {
+
+describe("parse mask examples suite", () => {
     it("should parse mask and return 24 as network bit size", () => {
         const mask = "255.255.255.0" // 8 bits for host, 24 for network
         const result = parseMaskToBitSize(mask)
@@ -15,7 +16,7 @@ describe("parse mask test suite", () => {
     })
 })
 
-describe("parse network part test suite", () => {
+describe("parse network part examples suite", () => {
     it("should parse network and return concrete length binary string", () => {
         const mask = "255.255.255.0"
         const bitSize = parseMaskToBitSize(mask)

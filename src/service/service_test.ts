@@ -25,7 +25,7 @@ const newServices = (
     }
 }
 
-describe("positive case scenarois rate limtier service test suite", () => {
+describe("positive case scenarois rate limtier service examples suite", () => {
     const ip = "128.92.39.29"
 
     it("should initialize service correctly", () => {
@@ -84,7 +84,7 @@ describe("positive case scenarois rate limtier service test suite", () => {
     })
 })
 
-describe("error case scenarios rate limiter service test suite", () => {
+describe("error case scenarios rate limiter service examples suite", () => {
     const ip = "128.92.39.29"
 
     it("should throw error because hit rate > limit ", () => {
