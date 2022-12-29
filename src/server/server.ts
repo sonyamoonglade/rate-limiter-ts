@@ -10,22 +10,24 @@ export default class Server {
         this.service = service
     }
 
-    initRoutes(): void{
-        this.app.get('/rate', this.handleRateLimit)
+    initRoutes(): void {
+        this.app.get("/rate", this.handleRateLimit)
     }
 
-    async handleRateLimit  (req:FastifyRequest, res:FastifyReply)  {
+    async handleRateLimit(req: FastifyRequest, res: FastifyReply) {
         res.send("ok")
         console.log(req, this.service)
     }
 
-    listen (port: number, host: string) {
-        return this.app.listen({
-            port,
-            host
-        }, () => {
-            console.log("server has started on port: ", port)
-        })
+    listen(port: number, host: string) {
+        return this.app.listen(
+            {
+                port,
+                host,
+            },
+            () => {
+                console.log("server has started on port: ", port)
+            }
+        )
     }
 }
-

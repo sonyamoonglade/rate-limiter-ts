@@ -20,21 +20,20 @@ describe("parse network part test suite", () => {
         const mask = "255.255.255.0"
         const bitSize = parseMaskToBitSize(mask)
 
-        const testingTable:{
-            ip: string,
+        const testingTable: {
+            ip: string
             expected: string
         }[] = [
             {
                 ip: "172.168.28.93",
-                expected: "101011001010100000011100"
+                expected: "101011001010100000011100",
             },
             {
-
                 ip: "122.91.28.93",
-                expected: "011110100101101100011100"
-            }
+                expected: "011110100101101100011100",
+            },
         ]
-        for(const test of testingTable){
+        for (const test of testingTable) {
             const network = parseNetworkPart(test.ip, bitSize)
             assert.equal(network.length, bitSize)
             assert.equal(network, test.expected)

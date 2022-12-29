@@ -24,7 +24,7 @@ export default class Store {
     hit(network: string): number {
         const now = Date.now()
         if (!this.hitsTable.has(network)) {
-            const control:RPSControl = {
+            const control: RPSControl = {
                 firstRequestAt: now,
                 requests: 1,
             }
@@ -32,7 +32,7 @@ export default class Store {
             return 1
         }
         let currControl = this.hitsTable.get(network) as RPSControl
-        if (!this.withinFunc(now, currControl.firstRequestAt)){
+        if (!this.withinFunc(now, currControl.firstRequestAt)) {
             currControl.requests = 1
             currControl.firstRequestAt = now
             return 1
@@ -69,7 +69,4 @@ export default class Store {
         this.blacklist.delete(network)
         return false
     }
-
-
 }
-

@@ -1,8 +1,3 @@
-
-
-const main = async () => {
-
-}
-
+const main = async () => {}
 
 main()
