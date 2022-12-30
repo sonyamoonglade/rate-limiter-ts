@@ -1,9 +1,11 @@
-import Server, { ServerConfig } from "./server/server"
-import Store from "./service/store"
-import { Second, withinOneSecond } from "./utils/utils"
-import Service, { NetConfig } from "./service/service"
+import Server from "./server/server"
+import { InMemoryStore } from "./service/store"
+import Service from "./service/service"
 import { parseMaskToBitSize } from "./network/network"
 import { compileRFCForm } from "./http/http"
+import { Second, withinOneSecond } from "./common/time"
+import { readConfig } from "./config/config"
+import path from "node:path"
 // import cluster from "node:cluster"
 // import os from "os"
 
@@ -14,22 +16,26 @@ const netBanDuration = Second * 5
 const RPS = 4
 
 const main = async () => {
-    const mask = "255.255.255.0"
-    const networkBitSize = parseMaskToBitSize(mask)
-    const store = new Store(netBanDuration, withinOneSecond)
-    const netConfig: NetConfig = {
-        rpsLimit: RPS,
-        bitSize: networkBitSize,
+    try {
+        const cfg = await readConfig(path.join(__dirname, "../config.yml"))
+        console.log(cfg)
+        const mask = "255.255.255.0"
+        const networkBitSize = parseMaskToBitSize(mask)
+        const store = new InMemoryStore(netBanDuration, withinOneSecond)
+        const service = new Service(store, {
+            rpsLimit: RPS,
+            bitSize: networkBitSize,
+        })
+        const server = new Server(service, {
+            networkBanDurationMs: netBanDuration,
+            RFCReplyForm: compileRFCForm(RPS),
+        })
+        server.initRoutes()
+        const port = 8000
+        server.listen(port)
+    } catch (err: any) {
+        console.error("fatal error: ", err)
     }
-    const service = new Service(store, netConfig)
-    const serverConfig: ServerConfig = {
-        networkBanDurationMs: netBanDuration,
-        RFCReplyForm: compileRFCForm(RPS),
-    }
-    const server = new Server(service, serverConfig)
-    server.initRoutes()
-    const port = 8000
-    return server.listen(port, "localhost")
 }
 // Think for routing request to certain worker
 // if (isMainProcess) {

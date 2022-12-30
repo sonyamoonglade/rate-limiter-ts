@@ -1,0 +1,9 @@
+
+network:
+  rps: 10
+  mask: "255.255.255.0"
+  banDuration: 20
+
+app:
+  port: 8000
+  host: "localhost"

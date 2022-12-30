@@ -1,4 +1,4 @@
-import { WithinFunc } from "../utils/utils"
+import { WithinFunc } from "../common/time"
 
 type RPSControl = {
     // First request time in milliseconds
@@ -6,7 +6,14 @@ type RPSControl = {
     requests: number
 }
 
-export default class Store {
+export interface Store {
+    hit(network: string): number
+    addToBlacklist(network: string): void
+    isInBlacklist(network: string): boolean
+    removeFromBlacklist(network: string): void
+}
+
+export class InMemoryStore implements Store {
     hitsTable: Map<string, RPSControl>
     blacklist: Map<string, number>
     // Given in milliseconds

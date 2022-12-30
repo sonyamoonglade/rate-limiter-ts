@@ -1,7 +1,7 @@
-import Store from "./store"
 import { parseNetworkPart } from "../network/network"
 import RateLimitError from "../errors/errors"
 import { ERROR_CODES } from "../errors/codes"
+import { Store } from "./store"
 
 export interface NetConfig {
     // Number of bits for network part within 32bit ip

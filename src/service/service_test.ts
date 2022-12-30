@@ -1,23 +1,24 @@
 import Service, { NetConfig } from "./service"
-import Store from "./store"
+import { InMemoryStore } from "./store"
 import assert from "node:assert"
-import { sleep, within, withinOneSecond } from "../utils/utils"
+
 import RateLimitError from "../errors/errors"
 import { ERROR_CODES } from "../errors/codes"
+import { sleep, within, withinOneSecond } from "../common/time"
 
 const newServices = (
     bitSize: number,
     numRequests: number,
     delta: number
 ): {
-    store: Store
+    store: InMemoryStore
     service: Service
 } => {
     const cfg: NetConfig = {
         bitSize,
         rpsLimit: numRequests,
     }
-    const store = new Store(100, within(delta))
+    const store = new InMemoryStore(100, within(delta))
     const service = new Service(store, cfg)
     return {
         store,
@@ -29,7 +30,7 @@ describe("positive case scenarois rate limtier service examples suite", () => {
     const ip = "128.92.39.29"
 
     it("should initialize service correctly", () => {
-        const store = new Store(1000, withinOneSecond)
+        const store = new InMemoryStore(1000, withinOneSecond)
         const netConfig: NetConfig = {
             bitSize: 24,
             rpsLimit: 10,
