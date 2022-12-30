@@ -3,7 +3,7 @@ import { InMemoryStore } from "./service/store"
 import Service from "./service/service"
 import { parseMaskToBitSize } from "./network/network"
 import { compileRFCForm } from "./http/http"
-import { Second, withinOneSecond } from "./common/time"
+import { withinOneSecond } from "./common/time"
 import { readConfig } from "./config/config"
 import path from "node:path"
 // import cluster from "node:cluster"
@@ -12,27 +12,22 @@ import path from "node:path"
 // const { isWorker, fork } = cluster
 // const isMainProcess = !isWorker
 // const CPUs = os.cpus().length
-const netBanDuration = Second * 5
-const RPS = 4
 
 const main = async () => {
     try {
-        const cfg = await readConfig(path.join(__dirname, "../config.yml"))
-        console.log(cfg)
-        const mask = "255.255.255.0"
-        const networkBitSize = parseMaskToBitSize(mask)
-        const store = new InMemoryStore(netBanDuration, withinOneSecond)
+        const { network, app } = await readConfig(path.join(__dirname, "../config.yml"))
+        const networkBitSize = parseMaskToBitSize(network.mask)
+        const store = new InMemoryStore(network.banDuration, withinOneSecond)
         const service = new Service(store, {
-            rpsLimit: RPS,
+            rpsLimit: network.rps,
             bitSize: networkBitSize,
         })
         const server = new Server(service, {
-            networkBanDurationMs: netBanDuration,
-            RFCReplyForm: compileRFCForm(RPS),
+            networkBanDurationMs: network.banDuration,
+            RFCReplyForm: compileRFCForm(network.rps),
         })
         server.initRoutes()
-        const port = 8000
-        server.listen(port)
+        server.listen(app.port, app.host)
     } catch (err: any) {
         console.error("fatal error: ", err)
     }
