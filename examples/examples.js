@@ -1,7 +1,7 @@
 import fetch from "node-fetch"
 import { sleep } from "../src/common/time"
 
-const doRequest = (url: string, ip: string) => {
+const doRequest = (url, ip) => {
     return fetch(url, {
         method: "GET",
         headers: {
@@ -39,6 +39,3 @@ const start2 = async () => {
         }
     }
 }
-console.log(start2, start)
-start()
-// start2()
