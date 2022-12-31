@@ -1,5 +1,5 @@
 import fetch from "node-fetch"
-import { sleep } from "../src/utils/utils"
+import { sleep } from "../src/common/time"
 
 const doRequest = (url: string, ip: string) => {
     return fetch(url, {
@@ -39,5 +39,6 @@ const start2 = async () => {
         }
     }
 }
-
-start2()
+console.log(start2, start)
+start()
+// start2()

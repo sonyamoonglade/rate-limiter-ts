@@ -14,6 +14,12 @@ describe("parse mask examples suite", () => {
             parseMaskToBitSize(mask)
         })
     })
+
+    it("should parse mask and return 23", () => {
+        const mask = "255.255.254.0"
+        const result = parseMaskToBitSize(mask)
+        assert.equal(result, 23)
+    })
 })
 
 describe("parse network part examples suite", () => {

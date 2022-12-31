@@ -1,6 +1,6 @@
 
 network:
-  rps: 10
+  rps: 1000
   mask: "255.255.255.0"
   banDuration: 20
 

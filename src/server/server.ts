@@ -25,10 +25,6 @@ export default class Server {
         this.app.get("/rate", this.handleRateLimit)
     }
 
-    log(ip: string, result: number): void {
-        console.log(`timestamp: ${Date.now()} /GET ip: ${ip} status: ${result}`)
-    }
-
     async handleRateLimit(req: FastifyRequest, res: FastifyReply) {
         const headers = req.headers
         const xForwardedFrom = headers["x-forwarded-from"]
@@ -56,6 +52,10 @@ export default class Server {
             this.log(ip, httpStatus)
             return r
         }
+    }
+
+    log(ip: string, result: number): void {
+        console.log(`timestamp: ${Date.now()} /GET ip: ${ip} status: ${result}`)
     }
 
     listen(port: number, host?: string) {
