@@ -24,9 +24,7 @@ For more details, please see config.yml
 
     $ make docker-build
 
-    $ docker run -d -p 8000:8000 \ 
-        -e NODE_ENV=production \
-        ratelimiter:latest
+    $ docker run -d -p 8000:8000 ratelimiter:latest
 
 This will boot an application and open port 8000.
 
