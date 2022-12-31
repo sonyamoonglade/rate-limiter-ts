@@ -1,5 +1,8 @@
 /.idea
+/.git
+/.husky
+/.github
+/.prettierrc
 /build
 /examples
 /node_modules
-/.git

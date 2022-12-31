@@ -9,11 +9,13 @@
         "build": "npm run prebuild && tsc -p .",
         "start:prod": "node build/main.js",
         "test:type-check": "tsc -p . --noEmit",
-        "test": "mocha --paralell --require ts-node/register --watch-extensions ts 'src/**/*.ts' ",
+        "test": "mocha --paralell --require ts-node/register src/**/*_test.ts",
         "format": "prettier --config .prettierrc --w ./src"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "rate-limiter"
+    ],
+    "author": "sonyamoonglade",
     "license": "ISC",
     "devDependencies": {
         "@types/chai": "^4.3.4",

@@ -11,4 +11,5 @@ COPY config.yml .
 RUN npm i
 COPY --from=build /app/build /app/build
 EXPOSE 8000
+ENV NODE_ENV=production
 ENTRYPOINT ["npm", "run", "start:prod"]
